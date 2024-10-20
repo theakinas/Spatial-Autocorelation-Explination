@@ -110,6 +110,8 @@ data <- data.frame(Variable = c("Income", "French Language"),
 #Produce table
 kable(data, caption = paste0("Descriptive statistics for selected ", 2016, " census variables"))
 ```
+<img width="253" alt="Table1Descriptive" src="https://github.com/user-attachments/assets/79cb89e0-6daa-4346-b0e2-b6af26f101a6">
+
 
 ### Creating a Map
 Next we will create maps of the distribution of our two variables in the selected area using the tmap package. These maps will highlight both income and french knowledge over the study area. By creating these maps, we can visualize potential income disparities and language and cultural hotspots which will be further tested for autocorrelaiton.
@@ -142,6 +144,9 @@ map_French <- tm_shape(French_noNA) +
 #Print maps side by side
 tmap_arrange(map_Income, map_French, ncol = 2, nrow = 1)
 ```
+
+<img width="429" alt="DescriptiveStatsMap" src="https://github.com/user-attachments/assets/3c12bb4f-73a0-485b-8ea2-5cd4fb3c4dab">
+
 
 ## Neighbourhood matrix
 
@@ -198,6 +203,9 @@ tmap_arrange(IncomeQueen, IncomeRook, IncomeBoth, ncol = 3, nrow = 1)
 
 ```
 
+<img width="415" alt="IncomeNeighbors" src="https://github.com/user-attachments/assets/ae6971eb-d1da-4a7a-aa40-d4988c06836a">
+
+
 Next a map of the French weight networks are created. Although, it is essentially the same as the census polygons involved in the analysis are the same. 
 
 ```{r NeighboursmapFrench, echo=TRUE, eval=TRUE, warning=FALSE, fig.cap="Penticton's census dissemination areas showing french knowledge neighbours queens weight (left)  rooks weight (middle) and the combination of the two (right)."}
@@ -219,6 +227,9 @@ FrenchBoth <- tm_shape(French_noNA) + tm_borders(col='lightgrey') +
 tmap_arrange(FrenchQueen, FrenchRook, FrenchBoth, ncol = 3, nrow = 1)
 
 ```
+
+<img width="412" alt="French Neighbors" src="https://github.com/user-attachments/assets/3d52a2af-a945-43cf-8bcf-01a8c20547f6">
+
 
 These maps highlight the difference in which polygons are selected using rooks and queens weight. Queens weight obviously expands the size of the neighborhood as there are eight neighboring connections (blue) rather than four (red). The two together (far right) is fairly similar to the queens weight with a few extra connections. 
 
@@ -279,6 +290,7 @@ data <- data.frame(Variable = c("Income", "French Language"),
 kable(data, caption = paste0("Moran's I for selected ", 2016, " census variables"))
 ```
 
+<img width="209" alt="Table2Moran's" src="https://github.com/user-attachments/assets/835a16ea-cd73-400a-aac9-998ade326cbc">
 
 As seen in the table above both Income and French Knowledge, the Moran's I value is positive and greater than the Expected I value. Variance will be used in the following Z score calculation.
 
@@ -312,6 +324,9 @@ datarange <- data.frame(Variable = c("Income", "French Language"),
 kable(datarange, caption = paste0("Range of Moran's I for selected ", 2016, " census variables"))
 
 ```
+
+<img width="247" alt="Table3Range" src="https://github.com/user-attachments/assets/861885fb-a250-42b8-a83b-1fd99657b1c4">
+
 
 Thus, while both the French Moran's I and the Income Moran's I are greater than the expected I, they are not very close to the maximum Moran's I value. Thus they may not show super strong clustering. 
 
@@ -404,7 +419,10 @@ tmap_arrange(map_LISA_Income, map_LISA_French, ncol = 2, nrow = 1)
 
 As can be seen in the map below, both variables show some hot spots for both clustering and dispersion. Median total income appears to have multiple census tracks which are clustered in the southeastern side of town, and one census track which is dispersed just slightly north of the towns core. French knowledge shows less overall significantly autocorrelated areas with a few of the census tracks showing either clustering or dispersion. 
 
-These maps provide an excellent visual of which and how many polygons are significantly spatially autocorrelated. However graphing these trends may provide us with a deeper look into patterns. how to 
+<img width="415" alt="LISAmaps" src="https://github.com/user-attachments/assets/065afa65-df86-4751-858f-d9c020d3bfc2">
+
+These maps provide an excellent visual of which and how many polygons are significantly spatially autocorrelated. However graphing these trends may provide us with a deeper look into patterns. 
+
 
 ```{r MoransIScatter, echo=TRUE, eval=TRUE, warning=FALSE, fig.cap= "Moran's I scatter plot for median total income."}
 #Create Moran's I scatter plot for Income
@@ -412,12 +430,16 @@ moran.plot(Income_noNA$`Median total income`, Income.lw, zero.policy=TRUE, spChk
            ylab="Spatially Lagged Median Total Income ($)", quiet=NULL)
 ```
 
+<img width="406" alt="Scatterplotincome" src="https://github.com/user-attachments/assets/08c9610d-146e-4f56-8f57-26fe048f62da">
+
 
 ```{r MoransIScatter2, echo=TRUE, eval=TRUE, warning=FALSE, fig.cap= "Moran's I scatter plot for percentage of respondants with knowledge of french."}
 #Create Moran's I scatter plot for French
 moran.plot(French_noNA$PercFrench, French.lw, zero.policy=TRUE, spChk=NULL, labels=NULL, xlab="Respondants with knowledge of French (%)", 
            ylab="Spatially Lagged knowledge of French (%)", quiet=NULL)
 ```
+
+<img width="400" alt="ScatterplotFrench" src="https://github.com/user-attachments/assets/488e41b2-3a19-4d68-bee3-da37dbed0925">
 
 
 For these plots, points with diamonds are considered statistically significant while the line shows the overall trend in the data. A positive sloped line indicates clustering while a negative sloped line indicates dispersion.To further analyze these plots, we can look to the quadrants. The top right quadrant indicated clustering of values higher than the mean. The bottom left quadrant indicates clustering of values lower than the mean. The top left quadrant indicates values lower than the mean surrounded by values higher than the mean and the lower right quadrant indicates values higher than the mean surrounded by values lower than the mean. 
